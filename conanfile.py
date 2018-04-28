@@ -4,9 +4,9 @@
 from conans import ConanFile, CMake, tools
 import os
 
-class GooglebenchmarkConan(ConanFile):
-    name = "google-benchmark"
-    version = "1.3.0"
+class GoogleBenchmarkConan(ConanFile):
+    name = "google_benchmark"
+    version = "1.4.0"
     description = "A library to support the benchmarking of functions, similar to unit-tests."
     url = "https://github.com/raulbocanegra/conan-google-benchmark"
     homepage = "https://github.com/google/benchmark"
@@ -21,8 +21,13 @@ class GooglebenchmarkConan(ConanFile):
 
     # Options may need to change depending on the packaged library.
     settings = "os", "arch", "compiler", "build_type"
-    options = {"shared": [True, False], "fPIC": [True, False], "enable_testing": [True, False], "enable_exceptions": [True, False]}
-    default_options = "shared=False", "fPIC=True"
+    options =  {
+        "fPIC": [True, False], 
+        "enable_testing": [True, False], 
+        "enable_exceptions": [True, False], 
+        "enable_lto":[True, False]
+    }
+    default_options = "fPIC=True", "enable_testing=False", "enable_exceptions=True", "enable_lto=False" 
 
     # Custom attributes for Bincrafters recipe conventions
     source_subfolder = "source_subfolder"
@@ -30,32 +35,21 @@ class GooglebenchmarkConan(ConanFile):
 
     def config_options(self):
         if self.settings.os == 'Windows':
-            del self.options.fPIC
-            self.short_paths = True # Otherwise it does not compile.
+            del self.options.fPIC            
 
-    def source(self):
-        #zip_name = "v%s.zip" % self.version        
-        #source_url = "https://github.com/google/benchmark/archive/%s" % zip_name
+    def source(self):        
         source_url = "https://github.com/google/benchmark"
         tools.get("{0}/archive/v{1}.zip".format(source_url, self.version))
         extracted_dir = "benchmark-" + self.version
 
         #Rename to "source_subfolder" is a convention to simplify later steps
-        os.rename(extracted_dir, self.source_subfolder)
-
-        #tools.download(url, zip_name)
-        #tools.unzip(zip_name)
-        #shutil.move("benchmark-%s" % self.version, "benchmark")
-        #tools.replace_in_file("benchmark/CMakeLists.txt", "project (benchmark)", '''project (benchmark)\ninclude(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)\nconan_basic_setup()''')
-        #os.unlink(zip_name)        
+        os.rename(extracted_dir, self.source_subfolder)        
         
     def configure_cmake(self):
-        cmake = CMake(self)
-        #cmake.definitions["BUILD_TESTS"] = False # example
+        cmake = CMake(self)        
         if self.settings.os != 'Windows':
-            cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.fPIC
-        cmake.definitions['BENCHMARK_ENABLE_TESTING'] = self.options.enable_testing
-        cmake.definitions['BENCHMARK_ENABLE_EXCEPTIONS'] = self.options.enable_exceptions
+            cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = "ON" if self.options.fPIC else "OFF"
+        cmake.definitions['BENCHMARK_ENABLE_TESTING'] = "ON" if self.options.enable_testing else "OFF"
         cmake.configure(build_folder=self.build_subfolder)
         return cmake
 
@@ -69,21 +63,12 @@ class GooglebenchmarkConan(ConanFile):
     def package(self):
         self.copy(pattern="LICENSE", dst="license", src=self.source_subfolder)
         cmake = self.configure_cmake()
-        cmake.install()
-        # If the CMakeLists.txt has a proper install method, the steps below may be redundant
-        # If so, you can just remove the lines below
-        include_folder = os.path.join(self.source_subfolder, "include")
-        self.copy(pattern="*", dst="include", src=include_folder)
-        self.copy(pattern="*.dll", dst="bin", keep_path=False)
-        self.copy(pattern="*.lib", dst="lib", keep_path=False)
-        self.copy(pattern="*.a", dst="lib", keep_path=False)
-        self.copy(pattern="*.so*", dst="lib", keep_path=False)
-        self.copy(pattern="*.dylib", dst="lib", keep_path=False)
+        cmake.install()        
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
+        # TODO: on Solaris add "kstat"
         if self.settings.os == "Windows":
             self.cpp_info.libs.append("Shlwapi")
         elif self.settings.os == "Linux":
             self.cpp_info.libs.append("pthread")
-        #TODO: on Solaris add "kstat"
