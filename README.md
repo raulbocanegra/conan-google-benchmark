@@ -2,7 +2,7 @@
 
 | Bintray | Windows | Linux & macOS |
 |:--------:|:---------:|:-----------------:|
-|[ ![Download](https://api.bintray.com/packages/rboc/public-conan/google_benchmark%3Arboc/images/download.svg) ](https://bintray.com/rboc/public-conan/google_benchmark%3Arboc/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/6ruummjw8yje9p1d?svg=true)](https://ci.appveyor.com/project/raulbocanegra/conan-google-benchmark)|[![Build Status](https://travis-ci.org/raulbocanegra/conan-google-benchmark.svg?)](https://travis-ci.org/raulbocanegra/conan-google-benchmark)|
+|[ ![Download](https://api.bintray.com/packages/tsoft/public-conan/google_benchmark%3Atsoft/images/download.svg) ](https://bintray.com/tsoft/public-conan/google_benchmark%3Atsoft/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/6ruummjw8yje9p1d?svg=true)](https://ci.appveyor.com/project/raulbocanegra/conan-google-benchmark)|[![Build Status](https://travis-ci.org/raulbocanegra/conan-google-benchmark.svg?)](https://travis-ci.org/raulbocanegra/conan-google-benchmark)|
 
 ## Conan.io Information
 
