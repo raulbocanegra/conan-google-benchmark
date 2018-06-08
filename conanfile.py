@@ -6,7 +6,7 @@ import os
 
 class GoogleBenchmarkConan(ConanFile):
     name = "google_benchmark"
-    version = "1.4.0"
+    version = "1.4.1"
     description = "A library to support the benchmarking of functions, similar to unit-tests."
     url = "https://github.com/raulbocanegra/conan-google-benchmark"
     homepage = "https://github.com/google/benchmark"
