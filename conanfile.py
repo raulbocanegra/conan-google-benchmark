@@ -31,7 +31,6 @@ class GoogleBenchmarkConan(ConanFile):
     def config_options(self):
         if self.settings.os == 'Windows':
             del self.options.fPIC
-            del self.options.shared
 
     def source(self):        
         source_url = "https://github.com/google/benchmark"
