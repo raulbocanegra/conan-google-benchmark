@@ -31,6 +31,9 @@ class GoogleBenchmarkConan(ConanFile):
     def config_options(self):
         if self.settings.os == 'Windows':
             del self.options.fPIC
+            self.options.shared = False
+        if self.options.enable_testing == False:
+            self.options.enable_gtest_tests = False
 
     def source(self):        
         source_url = "https://github.com/google/benchmark"
@@ -41,7 +44,7 @@ class GoogleBenchmarkConan(ConanFile):
     def configure_cmake(self):
         cmake = CMake(self)        
         cmake.definitions['BENCHMARK_ENABLE_TESTING'] = "ON" if self.options.enable_testing else "OFF"
-        cmake.definitions['BENCHMARK_ENABLE_GTEST_TESTS'] = "ON" if self.options.enable_gtest_tests else "OFF"
+        cmake.definitions['BENCHMARK_ENABLE_GTEST_TESTS'] = "ON" if self.options.enable_gtest_tests and self.options.enable_testing else "OFF"
         cmake.definitions['BENCHMARK_BUILD_32_BITS'] = "ON" if self.settings.arch == "x86" and self.settings.compiler != "Visual Studio"  else "OFF"
 
         cmake.configure(build_folder=self.build_subfolder)
