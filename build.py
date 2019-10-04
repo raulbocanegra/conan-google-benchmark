@@ -12,6 +12,4 @@ if __name__ == "__main__":
 
     builder = build_template_default.get_builder()
     builder.builds = filter(_is_shared_msvc_build, builder.items)
-    for b in builder.items:
-        print(b) 
-    #builder.run()
+    builder.run()
