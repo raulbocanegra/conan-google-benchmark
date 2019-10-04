@@ -20,17 +20,13 @@ class GoogleBenchmarkConan(ConanFile):
     options = {
         "shared": [True, False],
         "fPIC": [True, False], 
-        "enable_testing": [True, False], 
         "enable_exceptions": [True, False], 
-        "enable_lto":[True, False],
-        "enable_gtest_tests": [True, False] 
+        "enable_lto":[True, False]
     }
-    default_options = "shared=False", "fPIC=True", "enable_testing=False", "enable_exceptions=True", "enable_lto=False", "enable_gtest_tests=False"
+    default_options = "shared=False", "fPIC=True", "enable_exceptions=True", "enable_lto=False"
 
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
-
-    build_requires = ("gtest/1.8.0@bincrafters/stable")
 
     def config_options(self):
         if self.settings.os == 'Windows':
@@ -43,14 +39,13 @@ class GoogleBenchmarkConan(ConanFile):
 
     def source(self):        
         tools.get(**self.conan_data["sources"][self.version])
-
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)     
         
     def _configure_cmake(self):
         cmake = CMake(self)        
-        cmake.definitions['BENCHMARK_ENABLE_TESTING'] = "ON" if self.options.enable_testing else "OFF"
-        cmake.definitions['BENCHMARK_ENABLE_GTEST_TESTS'] = "ON" if self.options.enable_gtest_tests else "OFF"
+        cmake.definitions["BENCHMARK_ENABLE_TESTING"] = "OFF"
+        cmake.definitions["BENCHMARK_ENABLE_GTEST_TESTS"] = "OFF"
         cmake.definitions['BENCHMARK_BUILD_32_BITS'] = "ON" if self.settings.arch == "x86" and self.settings.compiler != "Visual Studio" else "OFF"
         cmake.definitions["BENCHMARK_ENABLE_LTO"] = "ON" if self.options.enable_lto else "OFF"
         cmake.definitions["BENCHMARK_ENABLE_EXCEPTIONS"] = "ON" if self.options.enable_exceptions else "OFF"
