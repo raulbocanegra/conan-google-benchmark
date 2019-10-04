@@ -8,8 +8,8 @@ import os
 
 class GoogleBenchmarkConan(ConanFile):
     name = "benchmark"
-    version = "1.4.1"
-    description = "A microbenchmark support library "
+    version = "1.5.0"
+    description = "A microbenchmark support library"
     url = "https://github.com/raulbocanegra/conan-google-benchmark"
     homepage = "https://github.com/google/benchmark"
     license = "Apache-2.0"
