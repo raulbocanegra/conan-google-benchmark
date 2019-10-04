@@ -31,9 +31,10 @@ class GoogleBenchmarkConan(ConanFile):
     def config_options(self):
         if self.settings.os == 'Windows':
             del self.options.fPIC
+            
+    def configure(self):
+        if self.settings.os == 'Windows':
             del self.options.shared  # See https://github.com/google/benchmark/issues/639 - no Windows shared support for now
-            if self.settings.compiler == "Visual Studio" and float(self.settings.compiler.version.value) <= 12:
-                raise ConanInvalidConfiguration("{} {} does not support Visual Studio <= 12".format(self.name, self.version))
 
     def source(self):        
         tools.get(**self.conan_data["sources"][self.version])
