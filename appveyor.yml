@@ -1,6 +1,10 @@
 environment:
   PYTHON_HOME: "C:\\Python37"
 
+  CONAN_USERNAME: "tsoft"
+  CONAN_LOGIN_USERNAME: "raulbocanegra"
+  CONAN_UPLOAD: "https://api.bintray.com/conan/tsoft/public-conan"
+
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       CONAN_VISUAL_VERSIONS: 14
