@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, CMake, tools
-from conans.errors import ConanInvalidConfiguration
 import os
-
 
 class GoogleBenchmarkConan(ConanFile):
     name = "benchmark"
